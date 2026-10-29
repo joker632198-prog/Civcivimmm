@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Civcivim 💛</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; min-height: 100vh; overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+    font-family: system-ui, -apple-system, sans-serif;
+    background: radial-gradient(circle at top, #fff8dc, #ffe4ef 58%, #ffd1e3);
+    color: #6a3850;
+  }
+  .hearts { position: fixed; inset: 0; overflow: hidden; pointer-events: none; }
+  .heart {
+    position: absolute; bottom: -50px; opacity: .7;
+    animation: floatUp linear infinite;
+  }
+  @keyframes floatUp {
+    from { transform: translateY(0) rotate(0deg); opacity: 0; }
+    15% { opacity: .75; }
+    to { transform: translateY(-115vh) rotate(25deg); opacity: 0; }
+  }
+  .card {
+    position: relative; z-index: 1; width: min(90vw, 440px);
+    padding: 30px 22px 34px; text-align: center;
+    background: rgba(255,255,255,.82); border: 2px solid #fff;
+    border-radius: 30px; box-shadow: 0 18px 55px #d96b9940;
+  }
+  .chick { font-size: 76px; line-height: 1.2; animation: bob 1.8s ease-in-out infinite; }
+  @keyframes bob { 0%,100% { transform: translateY(0) rotate(-4deg); } 50% { transform: translateY(-8px) rotate(4deg); } }
+  h1 { font-size: clamp(25px, 7vw, 34px); margin: 16px 0 8px; color: #d64f83; }
+  p { margin: 0 0 26px; font-size: 17px; }
+  .buttons { display: flex; justify-content: center; align-items: center; gap: 12px; flex-wrap: wrap; min-height: 64px; }
+  button {
+    border: 0; border-radius: 999px; padding: 14px 24px; font-size: 17px;
+    font-weight: 800; color: white; cursor: pointer; touch-action: manipulation;
+    box-shadow: 0 7px 16px #00000018; transition: transform .22s ease, font-size .22s ease;
+  }
+  #yes { background: linear-gradient(135deg,#43c77a,#239b5a); }
+  #no { background: linear-gradient(135deg,#ff8197,#e64b69); }
+  .note { margin-top: 22px; font-size: 13px; color: #a56c83; }
+  #celebration { display:none; margin-top: 20px; font-size: 20px; font-weight: 800; color: #d64f83; animation: pop .5s ease both; }
+  @keyframes pop { from { transform: scale(.5); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+  .burst { position: fixed; z-index: 5; pointer-events: none; animation: burst 1.5s ease-out forwards; font-size: 26px; }
+  @keyframes burst { from { transform: translateY(0) scale(.5); opacity: 1; } to { transform: translateY(-180px) scale(1.5) rotate(25deg); opacity: 0; } }
+</style>
+</head>
+<body>
+<div class="hearts" id="hearts"></div>
+<main class="card">
+  <div class="chick">🐥💗</div>
+  <h1>Civcivim, benimle çıkar mısın?</h1>
+  <p>Minik kalbim cevabını merak ediyor… 🥺💛</p>
+  <div class="buttons">
+    <button id="yes" type="button">Evet 💚</button>
+    <button id="no" type="button">Hayır 🙈</button>
+  </div>
+  <div id="celebration">Ayyy! Artık benim civcivimsin! 🐥💖<br>Birlikte çok mutlu olalım 💞</div>
+  <div class="note" id="note">Bir cevap seç bakalım, civcivim 💌</div>
+</main>
+<script>
+  const yes = document.getElementById('yes');
+  const no = document.getElementById('no');
+  const celebration = document.getElementById('celebration');
+  const note = document.getElementById('note');
+  const hearts = document.getElementById('hearts');
+  let noCount = 0, yesScale = 1;
+
+  for (let i = 0; i < 22; i++) {
+    const el = document.createElement('span');
+    el.className = 'heart';
+    el.textContent = ['💗','💕','💖','♡','💛'][i % 5];
+    el.style.left = Math.random() * 100 + '%';
+    el.style.animationDuration = (7 + Math.random() * 9) + 's';
+    el.style.animationDelay = (-Math.random() * 12) + 's';
+    el.style.fontSize = (16 + Math.random() * 18) + 'px';
+    hearts.appendChild(el);
+  }
+
+  no.addEventListener('click', () => {
+    noCount++;
+    yesScale = Math.min(1 + noCount * 0.22, 3.1);
+    yes.style.transform = `scale(${yesScale})`;
+    yes.style.fontSize = `${17 + Math.min(noCount * 1.5, 18)}px`;
+    const messages = [
+      'Emin misin civcivim? 🥺',
+      'Evet biraz daha büyüdü 🙈💗',
+      'Kalbim hâlâ umutlu… 🐥',
+      'Evet artık kocaman oldu! 💚',
+      'Bir şans ver, civcivim 💖'
+    ];
+    note.textContent = messages[(noCount - 1) % messages.length];
+    no.style.transform = `scale(${Math.max(0.72, 1 - noCount * 0.045)})`;
+  });
+
+  yes.addEventListener('click', () => {
+    celebration.style.display = 'block';
+    note.textContent = 'Bu anı kalbimize yazdık 💌';
+    no.style.display = 'none';
+    yes.textContent = 'EVET! 💖🐥';
+    yes.style.transform = 'scale(1.12)';
+    for (let i = 0; i < 32; i++) {
+      const el = document.createElement('span');
+      el.className = 'burst';
+      el.textContent = ['💖','💗','💕','🐥','✨','💛'][i % 6];
+      el.style.left = (8 + Math.random() * 84) + 'vw';
+      el.style.top = (45 + Math.random() * 35) + 'vh';
+      el.style.animationDelay = (Math.random() * .45) + 's';
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), 2100);
+    }
+  });
+</script>
+</body>
+</html>
